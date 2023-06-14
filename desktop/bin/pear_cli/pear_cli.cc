@@ -1,8 +1,9 @@
+#include "format.h"
 #include "screen_capture/screen_capturer.h"
 #include "screen_capture/source_watcher.h"
 #include <chrono>
-#include <format>
 #include <iostream>
+#include <string>
 
 using namespace pear::capture;
 
@@ -11,7 +12,7 @@ int main() {
     std::cout << "Pear.ng streaming client\n---" << std::endl;
     for (int i = 0; i < sources.size(); i++) {
         auto source = sources[i];
-        std::cout << std::format("{}) {}: {}", i, source->type == Screen ? "Screen" : "Window", source->title)
+        std::cout << pear::format("{}) {}: {}", i, source->type == Screen ? "Screen" : "Window", source->title)
                   << std::endl;
     }
 
@@ -24,7 +25,7 @@ int main() {
         if (source_index <= sources.size() - 1) {
             source = sources[source_index];
         } else {
-            std::cout << std::format("{} not a valid choice", read_source_index) << std::endl;
+            std::cout << pear::format("{} not a valid choice", read_source_index) << std::endl;
         }
     }
 
@@ -32,7 +33,13 @@ int main() {
     auto capturer = ScreenCapturer::Create(source);
     for (auto frame = capturer->Capture(); frame; frame = capturer->Capture()) {
         auto diff = duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start);
-        std::cout << std::format("{} {}x{}", diff, frame->Width(), frame->Height()) << std::endl;
+
+        // works
+        std::cout << fmt::format("{}ms {}x{}", diff.count(), frame->Width(), frame->Height()) << std::endl;
+
+        // does not work
+//        std::cout << pear::format("{}ms {}x{}", diff.count(), frame->Width(), frame->Height()) << std::endl;
+
         start = std::chrono::steady_clock::now();
     }
     return 0;
