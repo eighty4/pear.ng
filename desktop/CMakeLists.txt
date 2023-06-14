@@ -33,4 +33,5 @@ endif ()
 add_definitions(${PEAR_COMPILER_DEFINITIONS})
 
 add_subdirectory(bin/pear_cli)
+add_subdirectory(modules/net_tcp)
 add_subdirectory(modules/screen_capture)
