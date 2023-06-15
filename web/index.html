@@ -1,0 +1,20 @@
+
+<script>
+    const ws = new WebSocket('ws://localhost:8081')
+    ws.onopen = () => {
+        console.log('ws open')
+    }
+    ws.onclose = () => {
+        console.log('ws close')
+    }
+    ws.onerror = (err) => {
+        console.log('ws error', err)
+    }
+    ws.onmessage = (e) => {
+        console.log('ws msg', e)
+    }
+</script>
+
+<h1>Pear.ng</h1>
+
+<button>I'm a button</button>

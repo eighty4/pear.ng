@@ -1,0 +1,14 @@
+{
+  "name": "proxy",
+  "version": "0.0.1",
+  "description": "",
+  "main": "tcp_ws_proxy.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Adam McKee <adam.be.g84d@gmail.com",
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^8.13.0"
+  }
+}
