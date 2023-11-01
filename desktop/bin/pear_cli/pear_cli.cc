@@ -1,9 +1,8 @@
 #include "net_tcp/tcp_socket.h"
 #include "screen_capture/screen_capturer.h"
 #include "screen_capture/source_watcher.h"
-#include <chrono>
-#include <format>
 #include <iostream>
+#include <fmt/chrono.h>
 
 using namespace pear::capture;
 
@@ -12,8 +11,7 @@ int main() {
     std::cout << "Pear.ng streaming client\n---" << std::endl;
     for (int i = 0; i < sources.size(); i++) {
         auto source = sources[i];
-        std::cout << std::format("{}) {}: {}", i, source->type == Screen ? "Screen" : "Window", source->title)
-                  << std::endl;
+        fmt::print("{}) {}: {}\n", i, source->type == Screen ? "Screen" : "Window", source->title);
     }
 
     std::shared_ptr<CaptureSource> source;
@@ -25,7 +23,7 @@ int main() {
         if (source_index <= sources.size() - 1) {
             source = sources[source_index];
         } else {
-            std::cout << std::format("{} not a valid choice", read_source_index) << std::endl;
+            fmt::print("{} not a valid choice\n", read_source_index);
         }
     }
 
@@ -36,8 +34,8 @@ int main() {
         retry++;
     }
     if (socket == pear::net::tcp::FAILED || socket == pear::net::tcp::RECOVERABLE) {
-        std::cout << std::format("tcp connect to 127.0.0.1:8080 failed after {} {}", retry,
-                                 retry == 1 ? "try" : "tries") << std::endl;
+        fmt::print("tcp connect to 127.0.0.1:8080 failed after {} {}\n", retry,
+                   retry == 1 ? "try" : "tries");
         exit(1);
     }
 
@@ -45,7 +43,7 @@ int main() {
     auto capturer = ScreenCapturer::Create(source);
     for (auto frame = capturer->Capture(); frame; frame = capturer->Capture()) {
         auto diff = duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start);
-        std::cout << std::format("{} {}x{}", diff, frame->Width(), frame->Height()) << std::endl;
+        fmt::print("{} {}x{}\n", diff, frame->Width(), frame->Height());
         start = std::chrono::steady_clock::now();
         std::cout << "send " << pear::net::tcp::SocketSend(socket, "data!", 5) << std::endl;
     }

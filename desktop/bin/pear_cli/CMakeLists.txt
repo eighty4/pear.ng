@@ -3,6 +3,7 @@ project(pear-cli)
 set(SOURCES pear_cli.cc)
 
 set(LIBS
+        fmt::fmt
         pear_net_tcp
         pear_screen_capture
         )
